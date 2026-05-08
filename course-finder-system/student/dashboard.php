@@ -27,46 +27,6 @@ $result = $conn->query($query);
 <head>
     <title>Student Dashboard - Course Finder</title>
 
-    <!-- FIXED CSS PATH -->
-    <link rel="stylesheet" href="/course-finder-system/assets/css/style.css">
-
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f2f4f8;
-        }
-
-        .container {
-            padding: 20px;
-            text-align: center;
-        }
-
-        table {
-            margin: auto;
-            width: 80%;
-            background: white;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
-
-        .nav {
-            margin-top: 20px;
-        }
-
-        .nav a {
-            margin: 0 10px;
-        }
-
-        .empty {
-            margin-top: 20px;
-            color: red;
-        }
-    </style>
 
 </head>
 <body>

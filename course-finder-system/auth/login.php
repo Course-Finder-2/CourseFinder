@@ -35,40 +35,6 @@ if (isset($_POST['login'])) {
 <head>
     <title>Login - Course Finder System</title>
 
-    <!-- FIXED CSS PATH -->
-    <link rel="stylesheet" href="/course-finder-system/assets/css/style.css">
-
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            width: 350px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        input {
-            width: 100%;
-        }
-
-        .error {
-            color: red;
-            margin-top: 10px;
-        }
-
-        a {
-            display: block;
-            margin-top: 10px;
-        }
-    </style>
 
 </head>
 <body>

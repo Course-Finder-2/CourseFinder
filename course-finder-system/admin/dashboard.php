@@ -23,54 +23,10 @@ $category_count = $categories->fetch_assoc()['total'];
 <head>
     <title>Admin Dashboard - Course Finder</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="/course-finder-system/assets/css/style.css">
-
     <!-- CHART.JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f2f4f8;
-        }
-
-        .container {
-            padding: 20px;
-        }
-
-        .cards {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
-            width: 200px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .chart-box {
-            width: 60%;
-            margin: 40px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        a {
-            display: block;
-            margin: 5px;
-        }
-    </style>
+    
 
 </head>
 <body>
