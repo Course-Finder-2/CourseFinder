@@ -9,7 +9,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
 
 $message = "";
 
-/* DELETE USER */
+/* ===============
+   DELETE USER 
+================== */
 if (isset($_GET['delete'])) {
 
     $id = $_GET['delete'];
@@ -17,12 +19,20 @@ if (isset($_GET['delete'])) {
     // prevent self delete
     if ($id != $_SESSION['user_id']) {
 
-        $stmt = $conn->prepare("
+        // STEP 1: delete related child records first
+        $stmt1 = $conn->prepare("
+            DELETE FROM student_preferences WHERE user_id = ?
+        ");
+        $stmt1->bind_param("i", $id);
+        $stmt1->execute();
+
+        // STEP 2: delete user
+        $stmt2 = $conn->prepare("
             DELETE FROM users WHERE user_id = ?
         ");
-        $stmt->bind_param("i", $id);
+        $stmt2->bind_param("i", $id);
 
-        if ($stmt->execute()) {
+        if ($stmt2->execute()) {
             $message = "User deleted successfully!";
         } else {
             $message = "Database error: " . $conn->error;

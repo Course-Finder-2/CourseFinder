@@ -23,7 +23,7 @@ if (isset($_POST['register'])) {
 
     } else {
 
-        // 🔐 HASH PASSWORD (IMPORTANT UPGRADE)
+        // HASH PASSWORD
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // INSERT USER

@@ -8,7 +8,7 @@ $database = "course_finder";
 // Create connection
 $conn = new mysqli($host, $username, $password, $database);
 
-// Check connection (secure version)
+// Check connection
 if ($conn->connect_error) {
     // Do not expose system details in production
     die("Database connection failed. Please contact the administrator.");

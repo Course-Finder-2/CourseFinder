@@ -1,13 +1,6 @@
 <?php
 session_start();
 
-/*
-SECURITY NOTE:
-- Clears session variables
-- Fully destroys session
-- Prevents session reuse (important for authentication security)
-*/
-
 // Unset all session variables
 $_SESSION = [];
 
