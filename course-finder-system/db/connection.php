@@ -13,9 +13,14 @@ if ($conn->connect_error) {
     die("Database connection failed: " . $conn->connect_error);
 }
 
-// Optional: set charset (important for special characters)
-$conn->set_charset("utf8");
+// Set charset for proper encoding (important for UTF-8 text)
+$conn->set_charset("utf8mb4");
 
-// If needed for debugging (remove in final deployment)
-// echo "Connected successfully";
+/*
+NOTE:
+- utf8mb4 is better than utf8 because it supports full Unicode (emojis, special characters)
+- Remove any debug echo in final submission
+*/
+
+// Connection ready for use in all modules
 ?>

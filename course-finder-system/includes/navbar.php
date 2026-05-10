@@ -1,20 +1,22 @@
-<div style="background:#007bff; padding:10px;">
-    <a href="../index.php" style="color:white; margin-right:10px;">Home</a>
+<div class="navbar">
+
+    <a href="/course-finder-system/index.php">Home</a>
 
     <?php if (isset($_SESSION['role'])) { ?>
 
         <?php if ($_SESSION['role'] == 'admin') { ?>
-            <a href="../admin/dashboard.php" style="color:white; margin-right:10px;">Admin Dashboard</a>
+            <a href="/course-finder-system/admin/dashboard.php">Admin Dashboard</a>
         <?php } ?>
 
         <?php if ($_SESSION['role'] == 'student') { ?>
-            <a href="../student/dashboard.php" style="color:white; margin-right:10px;">Student Dashboard</a>
+            <a href="/course-finder-system/student/dashboard.php">Student Dashboard</a>
         <?php } ?>
 
-        <a href="../auth/logout.php" style="color:white;">Logout</a>
+        <a href="/course-finder-system/auth/logout.php">Logout</a>
 
     <?php } else { ?>
-        <a href="../auth/login.php" style="color:white;">Login</a>
-        <a href="../auth/register.php" style="color:white; margin-left:10px;">Register</a>
+        <a href="/course-finder-system/auth/login.php">Login</a>
+        <a href="/course-finder-system/auth/register.php">Register</a>
     <?php } ?>
+
 </div>

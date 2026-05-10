@@ -4,20 +4,33 @@ include("../db/connection.php");
 $message = "";
 
 if (isset($_POST['register'])) {
+
     $name = $_POST['name'];
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Default role is student
+    // Default role
     $role = "student";
 
-    $sql = "INSERT INTO users (name, email, password, role)
-            VALUES ('$name', '$email', '$password', '$role')";
+    // CHECK IF EMAIL EXISTS
+    $check = $conn->prepare("SELECT * FROM users WHERE email = ?");
+    $check->bind_param("s", $email);
+    $check->execute();
+    $result = $check->get_result();
 
-    if ($conn->query($sql)) {
-        $message = "Account created successfully! You can now login.";
+    if ($result->num_rows > 0) {
+        $message = "Email already exists!";
     } else {
-        $message = "Error: " . $conn->error;
+
+        // INSERT USER (SAFE VERSION)
+        $stmt = $conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $name, $email, $password, $role);
+
+        if ($stmt->execute()) {
+            $message = "Account created successfully! You can now login.";
+        } else {
+            $message = "Error: " . $conn->error;
+        }
     }
 }
 ?>
@@ -27,32 +40,37 @@ if (isset($_POST['register'])) {
 <head>
     <title>Register - Course Finder System</title>
 
+    <link rel="stylesheet" href="../assets/css/style.css">
 
 </head>
 <body>
 
 <div class="container">
 
-    <h2>📝 Register</h2>
+    <h2 style="text-align:center;">📝 Register</h2>
 
     <form method="POST">
 
-        <input type="text" name="name" placeholder="Full Name" required><br><br>
+        <input type="text" name="name" placeholder="Full Name" required>
 
-        <input type="email" name="email" placeholder="Email" required><br><br>
+        <input type="email" name="email" placeholder="Email" required>
 
-        <input type="password" name="password" placeholder="Password" required><br><br>
+        <input type="password" name="password" placeholder="Password" required>
 
         <button type="submit" name="register">Register</button>
 
     </form>
 
     <?php if ($message != "") { ?>
-        <p class="message"><?php echo $message; ?></p>
+        <p class="message" style="text-align:center; color:green;">
+            <?php echo $message; ?>
+        </p>
     <?php } ?>
 
-    <a href="login.php">Back to Login</a>
-    <a href="../index.php">Back to Home</a>
+    <div style="text-align:center; margin-top:15px;">
+        <a href="login.php">Back to Login</a> |
+        <a href="../index.php">Back to Home</a>
+    </div>
 
 </div>
 

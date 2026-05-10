@@ -18,22 +18,15 @@ $categories = $conn->query("SELECT COUNT(*) as total FROM categories");
 $category_count = $categories->fetch_assoc()['total'];
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Dashboard - Course Finder</title>
+<?php include("../includes/header.php"); ?>
+<?php include("../includes/navbar.php"); ?>
 
-    <!-- CHART.JS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    
-
-</head>
-<body>
+<!-- CHART.JS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <div class="container">
 
-    <h1 style="text-align:center;">👨‍💼 Admin Dashboard</h1>
+    <h1>👨‍💼 Admin Dashboard</h1>
 
     <!-- CARDS -->
     <div class="cards">
@@ -55,23 +48,21 @@ $category_count = $categories->fetch_assoc()['total'];
 
     </div>
 
-    <!-- CHART SECTION -->
+    <!-- CHART -->
     <div class="chart-box">
         <canvas id="myChart"></canvas>
     </div>
 
-    <hr>
-
     <h3>Management</h3>
 
-    <a href="courses.php">➡ Manage Courses</a>
-    <a href="categories.php">➡ Manage Categories</a>
-    <a href="users.php">➡ View Users</a>
-    <a href="../auth/logout.php">➡ Logout</a>
+    <div class="links">
+        <a href="courses.php">Manage Courses</a>
+        <a href="categories.php">Manage Categories</a>
+        <a href="users.php">View Users</a>
+    </div>
 
 </div>
 
-<!-- CHART SCRIPT -->
 <script>
 var ctx = document.getElementById('myChart').getContext('2d');
 
@@ -85,24 +76,13 @@ new Chart(ctx, {
                 <?php echo $student_count; ?>,
                 <?php echo $course_count; ?>,
                 <?php echo $category_count; ?>
-            ],
-            backgroundColor: [
-                'blue',
-                'green',
-                'orange'
             ]
         }]
     },
     options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true
-            }
-        }
+        responsive: true
     }
 });
 </script>
 
-</body>
-</html>
+<?php include("../includes/footer.php"); ?>
