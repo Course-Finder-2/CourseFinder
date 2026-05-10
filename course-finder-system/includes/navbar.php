@@ -1,22 +1,43 @@
+<?php
+$role = $_SESSION['role'] ?? null;
+?>
+
 <div class="navbar">
 
-    <a href="/course-finder-system/index.php">Home</a>
+    <!-- PUBLIC / GUEST USERS -->
+    <?php if (!$role) { ?>
 
-    <?php if (isset($_SESSION['role'])) { ?>
+        <a href="../index.php">Home</a>
+        <a href="../auth/login.php">Login</a>
+        <a href="../auth/register.php">Register</a>
 
-        <?php if ($_SESSION['role'] == 'admin') { ?>
-            <a href="/course-finder-system/admin/dashboard.php">Admin Dashboard</a>
-        <?php } ?>
+    <?php } ?>
 
-        <?php if ($_SESSION['role'] == 'student') { ?>
-            <a href="/course-finder-system/student/dashboard.php">Student Dashboard</a>
-        <?php } ?>
+    <!-- ADMIN NAVIGATION -->
+    <?php if ($role == 'admin') { ?>
 
-        <a href="/course-finder-system/auth/logout.php">Logout</a>
+        <a href="../admin/dashboard.php">Dashboard</a>
+        <a href="../admin/courses.php">Courses</a>
+        <a href="../admin/categories.php">Categories</a>
+        <a href="../admin/users.php">Users</a>
 
-    <?php } else { ?>
-        <a href="/course-finder-system/auth/login.php">Login</a>
-        <a href="/course-finder-system/auth/register.php">Register</a>
+    <?php } ?>
+
+    <!-- STUDENT NAVIGATION -->
+    <?php if ($role == 'student') { ?>
+
+        <a href="../student/dashboard.php">Dashboard</a>
+        <a href="../student/profile.php">Profile</a>
+        <a href="../student/preferences.php">Preferences</a>
+
+    <?php } ?>
+
+    <!-- LOGOUT (ONLY FOR LOGGED IN USERS) -->
+    <?php if ($role) { ?>
+        <a href="../auth/logout.php"
+           onclick="return confirm('Are you sure you want to logout?')">
+           Logout
+        </a>
     <?php } ?>
 
 </div>
