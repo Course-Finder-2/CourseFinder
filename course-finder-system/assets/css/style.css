@@ -19,6 +19,34 @@ body{
     color:white;
 }
 
+/* HERO & GLASS BOX (For index.php) */
+.hero {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.glass-box {
+    width: 90%;
+    max-width: 600px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.btn-group {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
 /* MAIN CONTAINER */
 .container{
     width:95%;
@@ -48,8 +76,8 @@ h1,h2,h3{
     font-weight:600;
 }
 
-/* INPUTS */
-input,select{
+/* INPUTS & SELECTS */
+input, select{
     width:100%;
     padding:12px;
     margin-top:12px;
@@ -61,6 +89,12 @@ input,select{
     transition:0.3s;
 }
 
+/* FIX FOR INVISIBLE CATEGORIES */
+select option {
+    background-color: #1e293b; /* Dark background for the dropdown list */
+    color: white;             /* White text for the dropdown list */
+}
+
 input::placeholder{
     color:#ddd;
 }
@@ -69,21 +103,24 @@ input:focus{
     background:rgba(255,255,255,0.25);
 }
 
-/* BUTTON */
-button{
-    width:100%;
-    padding:12px;
-    margin-top:15px;
-    border:none;
-    border-radius:10px;
-    background:linear-gradient(135deg,#3b82f6,#06b6d4);
-    color:white;
-    font-weight:600;
-    cursor:pointer;
-    transition:0.3s ease;
+/* BUTTONS & LINKS STYLED AS BUTTONS */
+button, .btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg,#3b82f6,#06b6d4);
+    color: white !important;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
 }
 
-button:hover{
+button:hover, .btn:hover{
     transform:translateY(-2px);
     background:linear-gradient(135deg,#2563eb,#0891b2);
 }
