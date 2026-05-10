@@ -10,26 +10,43 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
 $user_id = $_SESSION['user_id'];
 $message = "";
 
-/* UPDATE PROFILE */
+/* =========================
+   UPDATE PROFILE (SAFE)
+========================= */
 if (isset($_POST['update'])) {
+
     $name = $_POST['name'];
     $email = $_POST['email'];
 
-    $conn->query("
+    $stmt = $conn->prepare("
         UPDATE users
-        SET name = '$name',
-            email = '$email'
-        WHERE user_id = $user_id
+        SET name = ?, email = ?
+        WHERE user_id = ?
     ");
 
-    $_SESSION['name'] = $name;
-    $message = "Profile updated successfully!";
+    $stmt->bind_param("ssi", $name, $email, $user_id);
+
+    if ($stmt->execute()) {
+        $_SESSION['name'] = $name;
+        $message = "Profile updated successfully!";
+    } else {
+        $message = "Error updating profile.";
+    }
 }
 
-/* GET USER DATA */
-$result = $conn->query("
-    SELECT * FROM users WHERE user_id = $user_id
+/* =========================
+   GET USER DATA (SAFE)
+========================= */
+$stmt = $conn->prepare("
+    SELECT user_id, name, email, role
+    FROM users
+    WHERE user_id = ?
 ");
+
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+
+$result = $stmt->get_result();
 $user = $result->fetch_assoc();
 ?>
 
@@ -45,17 +62,17 @@ $user = $result->fetch_assoc();
 
     <h1>👤 My Profile</h1>
 
-    <!-- SUCCESS MESSAGE -->
+    <!-- MESSAGE -->
     <?php if ($message != "") { ?>
         <p class="message"><?php echo $message; ?></p>
     <?php } ?>
 
-    <!-- PROFILE SUMMARY (VIEW MODE) -->
+    <!-- PROFILE INFO -->
     <div class="card" style="width: 60%; margin: 20px auto;">
         <h3>📌 Account Information</h3>
         <p><strong>Name:</strong> <?php echo $user['name']; ?></p>
         <p><strong>Email:</strong> <?php echo $user['email']; ?></p>
-        <p><strong>Role:</strong> <?php echo $user['role']; ?></p>
+        <p><strong>Role:</strong> <?php echo ucfirst($user['role']); ?></p>
     </div>
 
     <!-- EDIT FORM -->
@@ -85,8 +102,8 @@ $user = $result->fetch_assoc();
     <div class="card" style="width: 70%; margin: 30px auto;">
         <h3>ℹ️ About This Page</h3>
         <p>
-            This page allows students to view and update their personal account information.
-            Any changes will immediately reflect in the system session and database.
+            This page allows students to safely update their profile information.
+            All updates are processed using secure prepared statements.
         </p>
     </div>
 
@@ -94,6 +111,7 @@ $user = $result->fetch_assoc();
     <div class="links">
         <a href="dashboard.php">⬅ Back to Dashboard</a>
         <a href="preferences.php">🎯 Set Preferences</a>
+
         <a href="../auth/logout.php"
            onclick="return confirm('Are you sure you want to logout?')">
            🚪 Logout

@@ -11,42 +11,54 @@ $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['name'];
 $current_date = date("F d, Y");
 
-/* GET STUDENT CATEGORY */
-$interestQuery = $conn->query("
+/* =========================
+   GET STUDENT CATEGORY (SAFE)
+========================= */
+$stmt = $conn->prepare("
     SELECT categories.category_name
     FROM student_preferences
     JOIN categories
         ON student_preferences.category_id = categories.category_id
-    WHERE student_preferences.user_id = $user_id
+    WHERE student_preferences.user_id = ?
 ");
+
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$interestQuery = $stmt->get_result();
 
 $interest = "Not Set";
 if ($interestQuery && $interestQuery->num_rows > 0) {
     $interest = $interestQuery->fetch_assoc()['category_name'];
 }
 
-/* TOTAL COURSES */
-$totalCourses = $conn->query("SELECT COUNT(*) AS total FROM courses");
-$total_courses = $totalCourses->fetch_assoc()['total'];
+/* =========================
+   TOTAL COURSES (SAFE)
+========================= */
+$totalCoursesStmt = $conn->prepare("SELECT COUNT(*) AS total FROM courses");
+$totalCoursesStmt->execute();
+$total_courses = $totalCoursesStmt->get_result()->fetch_assoc()['total'];
 
-/* RECOMMENDED COURSES (JOIN CORE) */
-$query = "
-SELECT DISTINCT
-    courses.course_id,
-    courses.course_name,
-    categories.category_name
-FROM student_preferences
-JOIN categories
-    ON student_preferences.category_id = categories.category_id
-JOIN courses
-    ON categories.category_id = courses.category_id
-WHERE student_preferences.user_id = $user_id
-";
+/* =========================
+   RECOMMENDED COURSES (SAFE)
+========================= */
+$recStmt = $conn->prepare("
+    SELECT DISTINCT
+        courses.course_id,
+        courses.course_name,
+        categories.category_name
+    FROM student_preferences
+    JOIN categories
+        ON student_preferences.category_id = categories.category_id
+    JOIN courses
+        ON categories.category_id = courses.category_id
+    WHERE student_preferences.user_id = ?
+");
 
-$result = $conn->query($query);
+$recStmt->bind_param("i", $user_id);
+$recStmt->execute();
+$result = $recStmt->get_result();
 
-/* COUNT RECOMMENDATIONS */
-$recommended_count = ($result) ? $result->num_rows : 0;
+$recommended_count = $result->num_rows;
 ?>
 
 <!DOCTYPE html>
@@ -61,6 +73,7 @@ $recommended_count = ($result) ? $result->num_rows : 0;
 
     <!-- HEADER -->
     <h1>🎓 Welcome, <?php echo $user_name; ?></h1>
+
     <p style="text-align:center; color:gray;">
         Today is <?php echo $current_date; ?>
     </p>
@@ -124,7 +137,7 @@ $recommended_count = ($result) ? $result->num_rows : 0;
         <h3>💡 How Recommendations Work</h3>
         <p>
             The system uses your selected category from the preferences module.
-            It then matches available courses using SQL JOIN operations to generate personalized recommendations.
+            It then matches available courses using secure prepared SQL statements and JOIN operations.
         </p>
     </div>
 
@@ -133,6 +146,7 @@ $recommended_count = ($result) ? $result->num_rows : 0;
 
         <a href="profile.php">👤 Profile</a>
         <a href="preferences.php">🎯 Preferences</a>
+
         <a href="../auth/logout.php"
            onclick="return confirm('Are you sure you want to logout?')">
            🚪 Logout

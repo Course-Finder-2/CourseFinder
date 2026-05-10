@@ -11,17 +11,23 @@ $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['name'];
 $message = "";
 
-// GET CURRENT PREFERENCE
+/* =========================
+   GET CURRENT PREFERENCE (SAFE)
+========================= */
 $current_category_id = "";
 $current_category_name = "Not Set";
 
-$current = $conn->query("
+$stmt = $conn->prepare("
     SELECT categories.category_id, categories.category_name
     FROM student_preferences
     JOIN categories
         ON student_preferences.category_id = categories.category_id
-    WHERE student_preferences.user_id = $user_id
+    WHERE student_preferences.user_id = ?
 ");
+
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$current = $stmt->get_result();
 
 if ($current && $current->num_rows > 0) {
     $current_data = $current->fetch_assoc();
@@ -29,29 +35,41 @@ if ($current && $current->num_rows > 0) {
     $current_category_name = $current_data['category_name'];
 }
 
-// SAVE OR UPDATE PREFERENCE
+/* =========================
+   SAVE OR UPDATE PREFERENCE (SAFE)
+========================= */
 if (isset($_POST['save'])) {
+
     $category_id = $_POST['category_id'];
 
-    // Remove existing preference
-    $conn->query("
+    /* DELETE OLD PREFERENCE */
+    $delStmt = $conn->prepare("
         DELETE FROM student_preferences
-        WHERE user_id = $user_id
+        WHERE user_id = ?
     ");
+    $delStmt->bind_param("i", $user_id);
+    $delStmt->execute();
 
-    // Insert new preference
-    if ($conn->query("
+    /* INSERT NEW PREFERENCE */
+    $insStmt = $conn->prepare("
         INSERT INTO student_preferences (user_id, category_id)
-        VALUES ($user_id, $category_id)
-    ")) {
+        VALUES (?, ?)
+    ");
+    $insStmt->bind_param("ii", $user_id, $category_id);
+
+    if ($insStmt->execute()) {
         $message = "Your preference has been saved successfully!";
 
-        // Refresh current preference data
-        $refresh = $conn->query("
+        /* Refresh display */
+        $refreshStmt = $conn->prepare("
             SELECT category_name
             FROM categories
-            WHERE category_id = $category_id
+            WHERE category_id = ?
         ");
+        $refreshStmt->bind_param("i", $category_id);
+        $refreshStmt->execute();
+
+        $refresh = $refreshStmt->get_result();
 
         if ($refresh && $refresh->num_rows > 0) {
             $refresh_data = $refresh->fetch_assoc();
@@ -74,63 +92,55 @@ if (isset($_POST['save'])) {
 
 <div class="container">
 
-    <!-- PAGE TITLE -->
+    <!-- TITLE -->
     <h1>🎯 Select Your Academic Interest</h1>
 
-    <!-- WELCOME MESSAGE -->
     <p style="text-align:center; color: gray;">
-        Hello, <?php echo $user_name; ?>!
-        Choose the academic category that best matches your interests.
+        Hello, <?php echo $user_name; ?>! Choose your preferred category.
     </p>
 
-    <!-- CURRENT PREFERENCE CARD -->
+    <!-- CURRENT -->
     <div class="card" style="width: 60%; margin: 20px auto;">
         <h3>📌 Current Preference</h3>
-        <p>
-            <strong><?php echo $current_category_name; ?></strong>
-        </p>
+        <p><strong><?php echo $current_category_name; ?></strong></p>
     </div>
 
-    <!-- SUCCESS MESSAGE -->
+    <!-- MESSAGE -->
     <?php if ($message != "") { ?>
-        <p class="message">
-            <?php echo $message; ?>
-        </p>
+        <p class="message"><?php echo $message; ?></p>
     <?php } ?>
 
-    <!-- INSTRUCTIONS -->
+    <!-- INFO -->
     <div class="card" style="width: 70%; margin: 20px auto;">
         <h3>ℹ️ How It Works</h3>
         <p>
-            The system uses your selected academic interest to recommend
-            courses that match your preferences.
+            Your selected category will be used to generate personalized course recommendations.
         </p>
     </div>
 
-    <!-- PREFERENCE FORM -->
+    <!-- FORM -->
     <form method="POST">
 
         <select name="category_id" required>
             <option value="">Select Category</option>
 
             <?php
-            $cats = $conn->query("
-                SELECT *
+            $catsStmt = $conn->prepare("
+                SELECT category_id, category_name
                 FROM categories
                 ORDER BY category_name ASC
             ");
+            $catsStmt->execute();
+            $cats = $catsStmt->get_result();
 
             while ($row = $cats->fetch_assoc()) {
-                $selected = ($row['category_id'] == $current_category_id)
-                    ? "selected"
-                    : "";
+                $selected = ($row['category_id'] == $current_category_id) ? "selected" : "";
             ?>
-                <option
-                    value="<?php echo $row['category_id']; ?>"
-                    <?php echo $selected; ?>>
+                <option value="<?php echo $row['category_id']; ?>" <?php echo $selected; ?>>
                     <?php echo $row['category_name']; ?>
                 </option>
             <?php } ?>
+
         </select>
 
         <button type="submit" name="save">
@@ -139,19 +149,19 @@ if (isset($_POST['save'])) {
 
     </form>
 
-    <!-- GUIDANCE NOTE -->
+    <!-- GUIDE -->
     <div class="card" style="width: 70%; margin: 30px auto;">
         <h3>💡 Recommendation Guide</h3>
         <p>
-            After saving your preference, go to the Student Dashboard to
-            view course recommendations generated specifically for you.
+            After saving, go to your dashboard to see updated course recommendations.
         </p>
     </div>
 
     <!-- NAVIGATION -->
     <div class="links">
         <a href="dashboard.php">⬅ Back to Dashboard</a>
-        <a href="profile.php">👤 View Profile</a>
+        <a href="profile.php">👤 Profile</a>
+
         <a href="../auth/logout.php"
            onclick="return confirm('Are you sure you want to logout?')">
            🚪 Logout
