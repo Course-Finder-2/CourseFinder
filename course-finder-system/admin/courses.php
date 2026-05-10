@@ -14,19 +14,23 @@ if (isset($_POST['add'])) {
     $name = $_POST['course_name'];
     $cat = $_POST['category_id'];
 
-    $conn->query("INSERT INTO courses (course_name, category_id)
-                  VALUES ('$name', '$cat')");
-
-    $message = "Course added successfully!";
+    if ($conn->query("INSERT INTO courses (course_name, category_id)
+                      VALUES ('$name', '$cat')")) {
+        $message = "Course added successfully!";
+    } else {
+        $message = "Database Error: " . $conn->error;
+    }
 }
 
 /* DELETE */
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
 
-    $conn->query("DELETE FROM courses WHERE course_id=$id");
-
-    $message = "Course deleted successfully!";
+    if ($conn->query("DELETE FROM courses WHERE course_id=$id")) {
+        $message = "Course deleted successfully!";
+    } else {
+        $message = "Database Error: " . $conn->error;
+    }
 }
 
 /* UPDATE */
@@ -35,16 +39,20 @@ if (isset($_POST['update'])) {
     $name = $_POST['course_name'];
     $cat = $_POST['category_id'];
 
-    $conn->query("UPDATE courses
-                  SET course_name='$name',
-                      category_id='$cat'
-                  WHERE course_id=$id");
-
-    $message = "Course updated successfully!";
+    if ($conn->query("UPDATE courses
+                      SET course_name='$name',
+                          category_id='$cat'
+                      WHERE course_id=$id")) {
+        $message = "Course updated successfully!";
+    } else {
+        $message = "Database Error: " . $conn->error;
+    }
 }
 
 /* EDIT MODE */
 $editMode = false;
+$editData = [];
+
 if (isset($_GET['edit'])) {
     $editMode = true;
 
@@ -73,18 +81,34 @@ if (isset($_GET['edit'])) {
                    value="<?php echo $editData['course_id']; ?>">
         <?php } ?>
 
+        <!-- Course Name -->
         <input type="text"
                name="course_name"
                placeholder="Course Name"
                required
                value="<?php echo $editMode ? $editData['course_name'] : ''; ?>">
 
-        <input type="number"
-               name="category_id"
-               placeholder="Category ID"
-               required
-               value="<?php echo $editMode ? $editData['category_id'] : ''; ?>">
+        <!-- Category Dropdown -->
+        <select name="category_id" required>
+            <option value="">Select Category</option>
 
+            <?php
+            $categories = $conn->query("SELECT * FROM categories");
+
+            while ($cat = $categories->fetch_assoc()) {
+                $selected = "";
+
+                if ($editMode && $editData['category_id'] == $cat['category_id']) {
+                    $selected = "selected";
+                }
+            ?>
+                <option value="<?php echo $cat['category_id']; ?>" <?php echo $selected; ?>>
+                    <?php echo $cat['category_name']; ?>
+                </option>
+            <?php } ?>
+        </select>
+
+        <!-- Submit Button -->
         <?php if ($editMode) { ?>
             <button type="submit" name="update">Update Course</button>
         <?php } else { ?>
@@ -95,7 +119,6 @@ if (isset($_GET['edit'])) {
 
     <!-- TABLE -->
     <table>
-
         <tr>
             <th>ID</th>
             <th>Course</th>
@@ -104,17 +127,26 @@ if (isset($_GET['edit'])) {
         </tr>
 
         <?php
-        $result = $conn->query("SELECT * FROM courses");
+        // INNER JOIN to show category names instead of IDs
+        $result = $conn->query("
+            SELECT courses.course_id,
+                   courses.course_name,
+                   categories.category_name
+            FROM courses
+            INNER JOIN categories
+                ON courses.category_id = categories.category_id
+            ORDER BY courses.course_id ASC
+        ");
 
         while ($row = $result->fetch_assoc()) {
         ?>
         <tr>
             <td><?php echo $row['course_id']; ?></td>
             <td><?php echo $row['course_name']; ?></td>
-            <td><?php echo $row['category_id']; ?></td>
+            <td><?php echo $row['category_name']; ?></td>
             <td>
                 <a href="?edit=<?php echo $row['course_id']; ?>">✏ Edit</a>
-
+                |
                 <a href="?delete=<?php echo $row['course_id']; ?>"
                    onclick="return confirm('Are you sure you want to delete this course?')">
                    🗑 Delete
@@ -122,7 +154,6 @@ if (isset($_GET['edit'])) {
             </td>
         </tr>
         <?php } ?>
-
     </table>
 
     <br>
