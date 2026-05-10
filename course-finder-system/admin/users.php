@@ -11,12 +11,23 @@ $message = "";
 
 /* DELETE USER */
 if (isset($_GET['delete'])) {
+
     $id = $_GET['delete'];
 
     // prevent self delete
     if ($id != $_SESSION['user_id']) {
-        $conn->query("DELETE FROM users WHERE user_id = $id");
-        $message = "User deleted successfully!";
+
+        $stmt = $conn->prepare("
+            DELETE FROM users WHERE user_id = ?
+        ");
+        $stmt->bind_param("i", $id);
+
+        if ($stmt->execute()) {
+            $message = "User deleted successfully!";
+        } else {
+            $message = "Database error: " . $conn->error;
+        }
+
     } else {
         $message = "You cannot delete your own account while logged in.";
     }
@@ -51,7 +62,9 @@ if (isset($_GET['delete'])) {
         </tr>
 
         <?php
-        $result = $conn->query("SELECT * FROM users ORDER BY user_id ASC");
+        $result = $conn->query("
+            SELECT * FROM users ORDER BY user_id ASC
+        ");
 
         while ($row = $result->fetch_assoc()) {
         ?>

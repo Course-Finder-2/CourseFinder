@@ -11,45 +11,76 @@ $message = "";
 
 /* CREATE */
 if (isset($_POST['add'])) {
+
     $name = $_POST['category_name'];
 
-    $conn->query("INSERT INTO categories (category_name)
-                  VALUES ('$name')");
+    $stmt = $conn->prepare("
+        INSERT INTO categories (category_name)
+        VALUES (?)
+    ");
+    $stmt->bind_param("s", $name);
 
-    $message = "Category added successfully!";
+    if ($stmt->execute()) {
+        $message = "Category added successfully!";
+    } else {
+        $message = "Database error: " . $conn->error;
+    }
 }
 
 /* DELETE */
 if (isset($_GET['delete'])) {
+
     $id = $_GET['delete'];
 
-    $conn->query("DELETE FROM categories WHERE category_id = $id");
+    $stmt = $conn->prepare("
+        DELETE FROM categories WHERE category_id = ?
+    ");
+    $stmt->bind_param("i", $id);
 
-    $message = "Category deleted successfully!";
+    if ($stmt->execute()) {
+        $message = "Category deleted successfully!";
+    } else {
+        $message = "Database error: " . $conn->error;
+    }
 }
 
 /* UPDATE */
 if (isset($_POST['update'])) {
+
     $id = $_POST['category_id'];
     $name = $_POST['category_name'];
 
-    $conn->query("UPDATE categories
-                  SET category_name = '$name'
-                  WHERE category_id = $id");
+    $stmt = $conn->prepare("
+        UPDATE categories
+        SET category_name = ?
+        WHERE category_id = ?
+    ");
+    $stmt->bind_param("si", $name, $id);
 
-    $message = "Category updated successfully!";
+    if ($stmt->execute()) {
+        $message = "Category updated successfully!";
+    } else {
+        $message = "Database error: " . $conn->error;
+    }
 }
 
 /* EDIT MODE */
 $editMode = false;
-$editData = null;
+$editData = [];
 
 if (isset($_GET['edit'])) {
-    $editMode = true;
 
+    $editMode = true;
     $id = $_GET['edit'];
-    $editQuery = $conn->query("SELECT * FROM categories WHERE category_id = $id");
-    $editData = $editQuery->fetch_assoc();
+
+    $stmt = $conn->prepare("
+        SELECT * FROM categories WHERE category_id = ?
+    ");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $editData = $result->fetch_assoc();
 }
 ?>
 
@@ -101,7 +132,9 @@ if (isset($_GET['edit'])) {
         </tr>
 
         <?php
-        $result = $conn->query("SELECT * FROM categories ORDER BY category_id ASC");
+        $result = $conn->query("
+            SELECT * FROM categories ORDER BY category_id ASC
+        ");
 
         while ($row = $result->fetch_assoc()) {
         ?>
@@ -110,7 +143,7 @@ if (isset($_GET['edit'])) {
             <td><?php echo $row['category_name']; ?></td>
             <td>
                 <a href="?edit=<?php echo $row['category_id']; ?>">✏ Edit</a>
-
+                |
                 <a href="?delete=<?php echo $row['category_id']; ?>"
                    onclick="return confirm('Are you sure you want to delete this category?')">
                    🗑 Delete

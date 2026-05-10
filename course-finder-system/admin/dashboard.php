@@ -7,21 +7,20 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
     exit();
 }
 
-/* SYSTEM COUNTS */
-$students = $conn->query("SELECT COUNT(*) as total FROM users WHERE role='student'");
-$student_count = $students->fetch_assoc()['total'];
+/* SYSTEM COUNTS (SAFE + CLEAN) */
+$student_count = $conn->query("SELECT COUNT(*) as total FROM users WHERE role='student'")
+    ->fetch_assoc()['total'];
 
-$courses = $conn->query("SELECT COUNT(*) as total FROM courses");
-$course_count = $courses->fetch_assoc()['total'];
+$course_count = $conn->query("SELECT COUNT(*) as total FROM courses")
+    ->fetch_assoc()['total'];
 
-$categories = $conn->query("SELECT COUNT(*) as total FROM categories");
-$category_count = $categories->fetch_assoc()['total'];
+$category_count = $conn->query("SELECT COUNT(*) as total FROM categories")
+    ->fetch_assoc()['total'];
 ?>
 
 <?php include("../includes/header.php"); ?>
 <?php include("../includes/navbar.php"); ?>
 
-<!-- CHART JS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <div class="container">
@@ -30,19 +29,19 @@ $category_count = $categories->fetch_assoc()['total'];
     <h1>👨‍💼 Admin Dashboard</h1>
 
     <p style="text-align:center; color:gray;">
-        Welcome to the admin control panel. Manage system data and monitor overall statistics.
+        Welcome Admin. This dashboard provides system monitoring, management tools, and data insights for the Course Finder System.
     </p>
 
     <!-- SUMMARY CARDS -->
     <div class="cards">
 
         <div class="card">
-            <h3>👨‍🎓 Total Students</h3>
+            <h3>👨‍🎓 Students</h3>
             <p><?php echo $student_count; ?></p>
         </div>
 
         <div class="card">
-            <h3>📚 Total Courses</h3>
+            <h3>📚 Courses</h3>
             <p><?php echo $course_count; ?></p>
         </div>
 
@@ -53,38 +52,35 @@ $category_count = $categories->fetch_assoc()['total'];
 
     </div>
 
-    <!-- CHART SECTION -->
+    <!-- CHART -->
     <div class="chart-box">
         <canvas id="myChart"></canvas>
     </div>
 
-    <!-- SYSTEM DESCRIPTION -->
+    <!-- SYSTEM INSIGHT -->
     <div class="card" style="width:70%; margin:30px auto;">
-        <h3>📊 System Overview</h3>
+        <h3>📊 System Insight</h3>
         <p>
-            This dashboard provides an overview of the Course Finder System.
-            It displays the number of registered students, available courses,
-            and categories. The system uses relational database structure
-            with JOIN operations for data management and recommendations.
+            The system uses relational database design with foreign key relationships between users,
+            categories, and courses. Student preferences are stored and used to generate course recommendations
+            through SQL JOIN operations.
         </p>
     </div>
 
-    <!-- MANAGEMENT LINKS -->
+    <!-- MANAGEMENT -->
     <h3>⚙️ Management Modules</h3>
 
     <div class="links">
-
         <a href="courses.php">📚 Manage Courses</a>
         <a href="categories.php">📂 Manage Categories</a>
         <a href="users.php">👥 View Users</a>
-
     </div>
 
 </div>
 
 <!-- CHART SCRIPT -->
 <script>
-var ctx = document.getElementById('myChart').getContext('2d');
+const ctx = document.getElementById('myChart').getContext('2d');
 
 new Chart(ctx, {
     type: 'bar',
@@ -102,9 +98,9 @@ new Chart(ctx, {
     },
     options: {
         responsive: true,
-        plugins: {
-            legend: {
-                display: true
+        scales: {
+            y: {
+                beginAtZero: true
             }
         }
     }

@@ -11,11 +11,17 @@ $message = "";
 
 /* CREATE */
 if (isset($_POST['add'])) {
+
     $name = $_POST['course_name'];
     $cat = $_POST['category_id'];
 
-    if ($conn->query("INSERT INTO courses (course_name, category_id)
-                      VALUES ('$name', '$cat')")) {
+    $stmt = $conn->prepare("
+        INSERT INTO courses (course_name, category_id)
+        VALUES (?, ?)
+    ");
+    $stmt->bind_param("si", $name, $cat);
+
+    if ($stmt->execute()) {
         $message = "Course added successfully!";
     } else {
         $message = "Database Error: " . $conn->error;
@@ -24,9 +30,13 @@ if (isset($_POST['add'])) {
 
 /* DELETE */
 if (isset($_GET['delete'])) {
+
     $id = $_GET['delete'];
 
-    if ($conn->query("DELETE FROM courses WHERE course_id=$id")) {
+    $stmt = $conn->prepare("DELETE FROM courses WHERE course_id = ?");
+    $stmt->bind_param("i", $id);
+
+    if ($stmt->execute()) {
         $message = "Course deleted successfully!";
     } else {
         $message = "Database Error: " . $conn->error;
@@ -35,14 +45,19 @@ if (isset($_GET['delete'])) {
 
 /* UPDATE */
 if (isset($_POST['update'])) {
+
     $id = $_POST['course_id'];
     $name = $_POST['course_name'];
     $cat = $_POST['category_id'];
 
-    if ($conn->query("UPDATE courses
-                      SET course_name='$name',
-                          category_id='$cat'
-                      WHERE course_id=$id")) {
+    $stmt = $conn->prepare("
+        UPDATE courses
+        SET course_name = ?, category_id = ?
+        WHERE course_id = ?
+    ");
+    $stmt->bind_param("sii", $name, $cat, $id);
+
+    if ($stmt->execute()) {
         $message = "Course updated successfully!";
     } else {
         $message = "Database Error: " . $conn->error;
@@ -54,11 +69,16 @@ $editMode = false;
 $editData = [];
 
 if (isset($_GET['edit'])) {
-    $editMode = true;
 
+    $editMode = true;
     $id = $_GET['edit'];
-    $editQuery = $conn->query("SELECT * FROM courses WHERE course_id=$id");
-    $editData = $editQuery->fetch_assoc();
+
+    $stmt = $conn->prepare("SELECT * FROM courses WHERE course_id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $editData = $result->fetch_assoc();
 }
 ?>
 
@@ -81,26 +101,23 @@ if (isset($_GET['edit'])) {
                    value="<?php echo $editData['course_id']; ?>">
         <?php } ?>
 
-        <!-- Course Name -->
         <input type="text"
                name="course_name"
                placeholder="Course Name"
                required
                value="<?php echo $editMode ? $editData['course_name'] : ''; ?>">
 
-        <!-- Category Dropdown -->
         <select name="category_id" required>
             <option value="">Select Category</option>
 
             <?php
-            $categories = $conn->query("SELECT * FROM categories");
+            $categories = $conn->query("SELECT * FROM categories ORDER BY category_name ASC");
 
             while ($cat = $categories->fetch_assoc()) {
-                $selected = "";
 
-                if ($editMode && $editData['category_id'] == $cat['category_id']) {
-                    $selected = "selected";
-                }
+                $selected = ($editMode && $editData['category_id'] == $cat['category_id'])
+                    ? "selected"
+                    : "";
             ?>
                 <option value="<?php echo $cat['category_id']; ?>" <?php echo $selected; ?>>
                     <?php echo $cat['category_name']; ?>
@@ -108,7 +125,6 @@ if (isset($_GET['edit'])) {
             <?php } ?>
         </select>
 
-        <!-- Submit Button -->
         <?php if ($editMode) { ?>
             <button type="submit" name="update">Update Course</button>
         <?php } else { ?>
@@ -119,6 +135,7 @@ if (isset($_GET['edit'])) {
 
     <!-- TABLE -->
     <table>
+
         <tr>
             <th>ID</th>
             <th>Course</th>
@@ -127,11 +144,11 @@ if (isset($_GET['edit'])) {
         </tr>
 
         <?php
-        // INNER JOIN to show category names instead of IDs
         $result = $conn->query("
-            SELECT courses.course_id,
-                   courses.course_name,
-                   categories.category_name
+            SELECT 
+                courses.course_id,
+                courses.course_name,
+                categories.category_name
             FROM courses
             INNER JOIN categories
                 ON courses.category_id = categories.category_id
@@ -154,6 +171,7 @@ if (isset($_GET['edit'])) {
             </td>
         </tr>
         <?php } ?>
+
     </table>
 
     <br>
