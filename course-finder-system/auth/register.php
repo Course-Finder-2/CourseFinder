@@ -9,27 +9,35 @@ if (isset($_POST['register'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Default role
     $role = "student";
 
     // CHECK IF EMAIL EXISTS
-    $check = $conn->prepare("SELECT * FROM users WHERE email = ?");
+    $check = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
     $check->bind_param("s", $email);
     $check->execute();
     $result = $check->get_result();
 
     if ($result->num_rows > 0) {
+
         $message = "Email already exists!";
+
     } else {
 
-        // INSERT USER (SAFE VERSION)
-        $stmt = $conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $name, $email, $password, $role);
+        // 🔐 HASH PASSWORD (IMPORTANT UPGRADE)
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        // INSERT USER
+        $stmt = $conn->prepare("
+            INSERT INTO users (name, email, password, role)
+            VALUES (?, ?, ?, ?)
+        ");
+
+        $stmt->bind_param("ssss", $name, $email, $hashedPassword, $role);
 
         if ($stmt->execute()) {
             $message = "Account created successfully! You can now login.";
         } else {
-            $message = "Error: " . $conn->error;
+            $message = "Error creating account.";
         }
     }
 }

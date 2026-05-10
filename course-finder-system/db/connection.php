@@ -8,19 +8,20 @@ $database = "course_finder";
 // Create connection
 $conn = new mysqli($host, $username, $password, $database);
 
-// Check connection
+// Check connection (secure version)
 if ($conn->connect_error) {
-    die("Database connection failed: " . $conn->connect_error);
+    // Do not expose system details in production
+    die("Database connection failed. Please contact the administrator.");
 }
 
-// Set charset for proper encoding (important for UTF-8 text)
+// Set charset for proper encoding (supports full Unicode / emojis)
 $conn->set_charset("utf8mb4");
 
 /*
-NOTE:
-- utf8mb4 is better than utf8 because it supports full Unicode (emojis, special characters)
-- Remove any debug echo in final submission
+SECURITY NOTES:
+- Centralized database connection file for all modules
+- utf8mb4 ensures full character support (including emojis)
+- Error message is hidden to prevent system exposure
+- This file is included in all system pages for consistency
 */
-
-// Connection ready for use in all modules
 ?>

@@ -4,15 +4,15 @@ session_start();
 
 $error = "";
 
-// LOGIN PROCESS
+/* LOGIN PROCESS */
 if (isset($_POST['login'])) {
 
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // SAFE QUERY (basic improvement)
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ? AND password = ?");
-    $stmt->bind_param("ss", $email, $password);
+    // SAFE QUERY (only by email)
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
     $stmt->execute();
 
     $result = $stmt->get_result();
@@ -21,17 +21,39 @@ if (isset($_POST['login'])) {
 
         $user = $result->fetch_assoc();
 
-        $_SESSION['user_id'] = $user['user_id'];
-        $_SESSION['role'] = $user['role'];
-        $_SESSION['name'] = $user['name'];
+        /*
+        SECURITY UPGRADE:
+        - password_verify() is used for hashed passwords
+        - fallback still works if your DB is plain text (temporary)
+        */
 
-        // ROLE-BASED REDIRECTION
-        if ($user['role'] == 'admin') {
-            header("Location: ../admin/dashboard.php");
+        $isPasswordCorrect = false;
+
+        if (password_get_info($user['password'])['algo']) {
+            // hashed password
+            $isPasswordCorrect = password_verify($password, $user['password']);
         } else {
-            header("Location: ../student/dashboard.php");
+            // fallback for old plain-text database
+            $isPasswordCorrect = ($password === $user['password']);
         }
-        exit();
+
+        if ($isPasswordCorrect) {
+
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['role'] = $user['role'];
+            $_SESSION['name'] = $user['name'];
+
+            // ROLE-BASED REDIRECTION
+            if ($user['role'] == 'admin') {
+                header("Location: ../admin/dashboard.php");
+            } else {
+                header("Location: ../student/dashboard.php");
+            }
+            exit();
+
+        } else {
+            $error = "Invalid email or password!";
+        }
 
     } else {
         $error = "Invalid email or password!";
@@ -44,7 +66,6 @@ if (isset($_POST['login'])) {
 <head>
     <title>Login - Course Finder System</title>
 
-    <!-- CSS -->
     <link rel="stylesheet" href="../assets/css/style.css">
 
 </head>
