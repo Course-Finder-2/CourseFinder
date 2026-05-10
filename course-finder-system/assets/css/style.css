@@ -1,172 +1,244 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f2f4f8;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
 }
 
-/* CONTAINER */
-.container {
-    width: 90%;
-    margin: auto;
-    padding: 20px;
+/* BACKGROUND */
+body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f172a,#1e293b,#0ea5e9);
+    color:white;
 }
 
-/* HEADINGS */
-h1, h2, h3 {
-    text-align: center;
+/* MAIN CONTAINER */
+.container{
+    width:95%;
+    max-width:1100px;
+    padding:20px;
+    margin:auto;
 }
 
-/* FORM */
-form {
-    background: white;
-    padding: 20px;
-    width: 50%;
-    margin: 20px auto;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+/* CENTER LOGIN / REGISTER BOX */
+form{
+    width:100%;
+    max-width:420px;
+    margin:30px auto;
+    padding:30px;
+    background:rgba(255,255,255,0.1);
+    -webkit-backdrop-filter:blur(15px);
+    backdrop-filter:blur(15px);
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    animation:fadeIn 0.5s ease-in-out;
 }
 
-/* RESPONSIVE FORM */
-@media (max-width: 768px) {
-    form {
-        width: 90%;
-    }
+/* FORM TITLE */
+h1,h2,h3{
+    text-align:center;
+    margin-bottom:15px;
+    font-weight:600;
 }
 
 /* INPUTS */
-input, select, button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    box-sizing: border-box;
+input,select{
+    width:100%;
+    padding:12px;
+    margin-top:12px;
+    border:none;
+    border-radius:10px;
+    outline:none;
+    background:rgba(255,255,255,0.15);
+    color:white;
+    transition:0.3s;
 }
 
-/* BUTTONS */
-button {
-    background: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: 0.3s;
+input::placeholder{
+    color:#ddd;
 }
 
-button:hover {
-    background: #0056b3;
+input:focus{
+    background:rgba(255,255,255,0.25);
 }
 
-/* TABLE */
-table {
-    width: 90%;
-    margin: 20px auto;
-    border-collapse: collapse;
-    background: white;
+/* BUTTON */
+button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(135deg,#3b82f6,#06b6d4);
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s ease;
 }
 
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 10px;
-    text-align: center;
-}
-
-/* TABLE HEADER */
-th {
-    background: #007bff;
-    color: white;
-}
-
-/* TABLE HOVER EFFECT */
-table tr:hover {
-    background: #f1f1f1;
+button:hover{
+    transform:translateY(-2px);
+    background:linear-gradient(135deg,#2563eb,#0891b2);
 }
 
 /* LINKS */
-a {
-    text-decoration: none;
-    color: blue;
+a{
+    color:#38bdf8;
+    text-decoration:none;
+    font-weight:500;
 }
 
-a:hover {
-    color: darkblue;
+a:hover{
+    color:white;
 }
 
-/* DASHBOARD CARDS */
-.cards {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
+/* TABLE */
+table{
+    width:100%;
+    margin-top:20px;
+    border-collapse:collapse;
+    overflow:hidden;
+    border-radius:12px;
 }
 
-.card {
-    background: white;
-    padding: 20px;
-    width: 200px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    text-align: center;
+/* TABLE HEAD */
+th{
+    background:#1d4ed8;
+    padding:12px;
+}
+
+/* TABLE CELLS */
+td{
+    background:rgba(255,255,255,0.08);
+    padding:12px;
+    text-align:center;
+}
+
+/* HOVER EFFECT */
+tr:hover td{
+    background:rgba(255,255,255,0.18);
+}
+
+/* CARDS (DASHBOARD) */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+
+.card{
+    background:rgba(255,255,255,0.1);
+    padding:25px;
+    border-radius:15px;
+    text-align:center;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    background:rgba(255,255,255,0.18);
 }
 
 /* CHART */
-.chart-box {
-    width: 70%;
-    margin: 30px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
+.chart-box{
+    width:100%;
+    max-width:800px;
+    margin:30px auto;
+    background:white;
+    padding:20px;
+    border-radius:15px;
 }
 
 /* NAV LINKS */
-.links {
-    text-align: center;
-    margin-top: 20px;
+.links{
+    text-align:center;
+    margin-top:20px;
 }
 
-.links a {
-    margin: 10px;
-    display: inline-block;
-    padding: 10px 15px;
-    background: #007bff;
-    color: white;
-    border-radius: 5px;
+.links a{
+    display:inline-block;
+    margin:8px;
+    padding:10px 15px;
+    background:#2563eb;
+    color:white;
+    border-radius:8px;
+    transition:0.3s;
 }
 
-.links a:hover {
-    background: #0056b3;
-}
-
-/* MESSAGE */
-.message {
-    text-align: center;
-    font-weight: bold;
-    color: green;
+.links a:hover{
+    background:#1d4ed8;
 }
 
 /* NAVBAR */
-.navbar {
-    background: #007bff;
-    padding: 12px;
-    text-align: center;
+.navbar{
+    width:100%;
+    background:rgba(0,0,0,0.25);
+    padding:12px;
+    text-align:center;
+    -webkit-backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
+    position:sticky;
+    top:0;
 }
 
-.navbar a {
-    color: white;
-    margin: 0 10px;
-    text-decoration: none;
-    font-weight: bold;
+.navbar a{
+    color:white;
+    margin:0 10px;
+    font-weight:600;
 }
 
-.navbar a:hover {
-    text-decoration: underline;
+.navbar a:hover{
+    color:#38bdf8;
+}
+
+/* MESSAGE */
+.message{
+    text-align:center;
+    color:#22c55e;
+    font-weight:600;
 }
 
 /* FOOTER */
-.footer {
-    text-align: center;
-    background: #f1f1f1;
-    padding: 10px;
-    margin-top: 30px;
+.footer{
+    text-align:center;
+    margin-top:30px;
+    padding:10px;
+    background:rgba(255,255,255,0.1);
+    width:100%;
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* RESPONSIVE */
+@media (max-width:768px){
+
+    form{
+        width:90%;
+    }
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    table{
+        font-size:14px;
+    }
 }
