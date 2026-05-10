@@ -1,0 +1,172 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f4f8;
+}
+
+/* CONTAINER */
+.container {
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+}
+
+/* HEADINGS */
+h1, h2, h3 {
+    text-align: center;
+}
+
+/* FORM */
+form {
+    background: white;
+    padding: 20px;
+    width: 50%;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* RESPONSIVE FORM */
+@media (max-width: 768px) {
+    form {
+        width: 90%;
+    }
+}
+
+/* INPUTS */
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+
+/* BUTTONS */
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* TABLE */
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: white;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+/* TABLE HEADER */
+th {
+    background: #007bff;
+    color: white;
+}
+
+/* TABLE HOVER EFFECT */
+table tr:hover {
+    background: #f1f1f1;
+}
+
+/* LINKS */
+a {
+    text-decoration: none;
+    color: blue;
+}
+
+a:hover {
+    color: darkblue;
+}
+
+/* DASHBOARD CARDS */
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    width: 200px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+/* CHART */
+.chart-box {
+    width: 70%;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* NAV LINKS */
+.links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.links a {
+    margin: 10px;
+    display: inline-block;
+    padding: 10px 15px;
+    background: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
+.links a:hover {
+    background: #0056b3;
+}
+
+/* MESSAGE */
+.message {
+    text-align: center;
+    font-weight: bold;
+    color: green;
+}
+
+/* NAVBAR */
+.navbar {
+    background: #007bff;
+    padding: 12px;
+    text-align: center;
+}
+
+.navbar a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    background: #f1f1f1;
+    padding: 10px;
+    margin-top: 30px;
+}
