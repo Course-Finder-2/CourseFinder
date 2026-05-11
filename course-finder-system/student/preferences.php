@@ -20,7 +20,7 @@ $current_category_name = "Not Set";
 $stmt = $conn->prepare("
     SELECT categories.category_id, categories.category_name
     FROM student_preferences
-    JOIN categories
+    INNER JOIN categories
         ON student_preferences.category_id = categories.category_id
     WHERE student_preferences.user_id = ?
 ");
