@@ -34,17 +34,24 @@ if ($interestQuery && $interestQuery->num_rows > 0) {
 /* =========================
    TOTAL COURSES (SAFE)
 ========================= */
-$totalCoursesStmt = $conn->prepare("SELECT COUNT(*) AS total FROM courses");
+$totalCoursesStmt = $conn->prepare("
+    SELECT COUNT(*) AS total
+    FROM courses
+");
 $totalCoursesStmt->execute();
 $total_courses = $totalCoursesStmt->get_result()->fetch_assoc()['total'];
 
 /* =========================
-   RECOMMENDED COURSES (SAFE)
+   RECOMMENDED COURSES WITH DETAILS (SAFE)
 ========================= */
 $recStmt = $conn->prepare("
     SELECT DISTINCT
         courses.course_id,
         courses.course_name,
+        courses.description,
+        courses.career_opportunities,
+        courses.duration,
+        courses.recommendation_reason,
         categories.category_name
     FROM student_preferences
     JOIN categories
@@ -52,6 +59,7 @@ $recStmt = $conn->prepare("
     JOIN courses
         ON categories.category_id = courses.category_id
     WHERE student_preferences.user_id = ?
+    ORDER BY courses.course_name ASC
 ");
 
 $recStmt->bind_param("i", $user_id);
@@ -72,7 +80,7 @@ $recommended_count = $result->num_rows;
 <div class="container">
 
     <!-- HEADER -->
-    <h1>🎓 Welcome, <?php echo $user_name; ?></h1>
+    <h1>🎓 Welcome, <?php echo htmlspecialchars($user_name); ?></h1>
 
     <p style="text-align:center; color:gray;">
         Today is <?php echo $current_date; ?>
@@ -83,7 +91,7 @@ $recommended_count = $result->num_rows;
 
         <div class="card">
             <h3>🎯 Interest</h3>
-            <p><?php echo $interest; ?></p>
+            <p><?php echo htmlspecialchars($interest); ?></p>
         </div>
 
         <div class="card">
@@ -101,28 +109,50 @@ $recommended_count = $result->num_rows;
     <!-- MESSAGE -->
     <p class="message">
         Recommendations are based on your selected interest:
-        <strong><?php echo $interest; ?></strong>
+        <strong><?php echo htmlspecialchars($interest); ?></strong>
     </p>
 
-    <!-- TABLE -->
-    <h3>📖 Recommended Courses</h3>
+    <!-- RECOMMENDED COURSES -->
+    <h2 style="text-align:center;">📖 Recommended Courses</h2>
 
     <?php if ($result && $result->num_rows > 0) { ?>
 
-        <table>
-            <tr>
-                <th>Course</th>
-                <th>Category</th>
-            </tr>
+        <?php while ($row = $result->fetch_assoc()) { ?>
 
-            <?php while ($row = $result->fetch_assoc()) { ?>
-            <tr>
-                <td><?php echo $row['course_name']; ?></td>
-                <td><?php echo $row['category_name']; ?></td>
-            </tr>
-            <?php } ?>
+            <div class="card" style="width:85%; margin:30px auto; text-align:left;">
 
-        </table>
+                <h2 style="margin-top:0;">
+                    🎓 <?php echo htmlspecialchars($row['course_name']); ?>
+                </h2>
+
+                <p>
+                    <strong>📂 Category:</strong>
+                    <?php echo htmlspecialchars($row['category_name']); ?>
+                </p>
+
+                <p>
+                    <strong>⏳ Duration:</strong>
+                    <?php echo htmlspecialchars($row['duration']); ?>
+                </p>
+
+                <p>
+                    <strong>📘 Description:</strong><br>
+                    <?php echo nl2br(htmlspecialchars($row['description'])); ?>
+                </p>
+
+                <p>
+                    <strong>💼 Career Opportunities:</strong><br>
+                    <?php echo nl2br(htmlspecialchars($row['career_opportunities'])); ?>
+                </p>
+
+                <p>
+                    <strong>⭐ Why This Course Is Recommended:</strong><br>
+                    <?php echo nl2br(htmlspecialchars($row['recommendation_reason'])); ?>
+                </p>
+
+            </div>
+
+        <?php } ?>
 
     <?php } else { ?>
 
@@ -130,14 +160,19 @@ $recommended_count = $result->num_rows;
             No recommendations yet. Please set your preferences first.
         </p>
 
+        <div class="links" style="text-align:center; margin-top:20px;">
+            <a href="preferences.php">🎯 Set Preferences Now</a>
+        </div>
+
     <?php } ?>
 
     <!-- INFO BOX -->
     <div class="card" style="width:70%; margin:30px auto;">
         <h3>💡 How Recommendations Work</h3>
         <p>
-            The system uses your selected category from the preferences module.
-            It then matches available courses using secure prepared SQL statements and JOIN operations.
+            The system uses your selected category from the Preferences module.
+            It then matches available courses using secure prepared SQL statements
+            and JOIN operations to generate personalized recommendations.
         </p>
     </div>
 
