@@ -7,9 +7,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
     exit();
 }
 
-/* =========================
-   SYSTEM COUNTS (SAFE + CLEAN)
-========================= */
+/* ==================
+   SYSTEM COUNTS 
+===================== */
 $student_count = $conn->query("
     SELECT COUNT(*) AS total
     FROM users
