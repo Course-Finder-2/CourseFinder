@@ -17,7 +17,7 @@ $current_date = date("F d, Y");
 $stmt = $conn->prepare("
     SELECT categories.category_name
     FROM student_preferences
-    JOIN categories
+    INNER JOIN categories
         ON student_preferences.category_id = categories.category_id
     WHERE student_preferences.user_id = ?
 ");
@@ -54,9 +54,9 @@ $recStmt = $conn->prepare("
         courses.recommendation_reason,
         categories.category_name
     FROM student_preferences
-    JOIN categories
+    INNER JOIN categories
         ON student_preferences.category_id = categories.category_id
-    JOIN courses
+    INNER JOIN courses
         ON categories.category_id = courses.category_id
     WHERE student_preferences.user_id = ?
     ORDER BY courses.course_name ASC
