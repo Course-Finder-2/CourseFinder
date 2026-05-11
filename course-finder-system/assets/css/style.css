@@ -61,7 +61,9 @@ body {
 /* =========================
    HEADINGS
 ========================= */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     text-align: center;
     margin-bottom: 15px;
     font-weight: 600;
@@ -243,7 +245,7 @@ a:hover {
 }
 
 /* Regular paragraphs inside cards */
-.card > p,
+.card>p,
 .card-description {
     font-size: 0.95rem !important;
     font-weight: 400 !important;
@@ -383,6 +385,7 @@ tr:hover td {
         opacity: 0;
         transform: translateY(12px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -437,7 +440,7 @@ tr:hover td {
     }
 
     p,
-    .card > p,
+    .card>p,
     .card-description,
     td {
         font-size: 0.9rem !important;
