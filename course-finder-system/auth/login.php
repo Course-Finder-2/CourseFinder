@@ -10,7 +10,7 @@ if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // SAFE QUERY (only by email)
+    // SAFE QUERY
     $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -21,20 +21,21 @@ if (isset($_POST['login'])) {
 
         $user = $result->fetch_assoc();
 
-        /*
-        SECURITY UPGRADE:
-        - password_verify() is used for hashed passwords
-        - fallback still works if your DB is plain text (temporary)
-        */
-
         $isPasswordCorrect = false;
 
+        // HASHED PASSWORD CHECK
         if (password_get_info($user['password'])['algo']) {
-            // hashed password
-            $isPasswordCorrect = password_verify($password, $user['password']);
+
+            $isPasswordCorrect = password_verify(
+                $password,
+                $user['password']
+            );
+
         } else {
-            // fallback for old plain-text database
-            $isPasswordCorrect = ($password === $user['password']);
+
+            // fallback old password
+            $isPasswordCorrect =
+                ($password === $user['password']);
         }
 
         if ($isPasswordCorrect) {
@@ -43,19 +44,25 @@ if (isset($_POST['login'])) {
             $_SESSION['role'] = $user['role'];
             $_SESSION['name'] = $user['name'];
 
-            // ROLE-BASED REDIRECTION
+            // REDIRECT
             if ($user['role'] == 'admin') {
+
                 header("Location: ../admin/dashboard.php");
+
             } else {
+
                 header("Location: ../student/dashboard.php");
             }
+
             exit();
 
         } else {
+
             $error = "Invalid email or password!";
         }
 
     } else {
+
         $error = "Invalid email or password!";
     }
 }
@@ -64,37 +71,95 @@ if (isset($_POST['login'])) {
 <!DOCTYPE html>
 <html>
 <head>
+
     <title>Login - Course Finder System</title>
 
+    <!-- CSS -->
     <link rel="stylesheet" href="../assets/css/style.css">
 
+    <!-- ICONS -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
+
 <body>
 
 <div class="container">
 
-    <h2 style="text-align:center;">🔐 Login</h2>
-
     <form method="POST">
 
-        <input type="email" name="email" placeholder="Email" required>
+        <div class="logo">
+            🎓
+        </div>
 
-        <input type="password" name="password" placeholder="Password" required>
+        <h1>Welcome Back</h1>
 
-        <button type="submit" name="login">Login</button>
+        <p class="subtitle">
+            Login to your Course Finder account
+        </p>
+
+        <!-- EMAIL -->
+        <div class="input-box">
+
+            <i class="fa-solid fa-envelope"></i>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+            >
+
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="input-box">
+
+            <i class="fa-solid fa-lock"></i>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+            >
+
+        </div>
+
+        <!-- ERROR -->
+        <?php if ($error != "") { ?>
+
+            <div class="error-message">
+                <?php echo $error; ?>
+            </div>
+
+        <?php } ?>
+
+        <!-- BUTTON -->
+        <button type="submit" name="login">
+
+            <i class="fa-solid fa-right-to-bracket"></i>
+            Login
+
+        </button>
+
+        <!-- LINKS -->
+        <div class="links">
+
+            <a href="register.php">
+                Create Account
+            </a>
+
+            <span> </span>
+
+            <a href="../index.php">
+                Back to Home
+            </a>
+
+        </div>
 
     </form>
-
-    <?php if ($error != "") { ?>
-        <p class="message" style="color:red; text-align:center;">
-            <?php echo $error; ?>
-        </p>
-    <?php } ?>
-
-    <div style="text-align:center; margin-top:15px;">
-        <a href="register.php">Create Account</a> |
-        <a href="../index.php">Back to Home</a>
-    </div>
 
 </div>
 
