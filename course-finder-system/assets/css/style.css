@@ -80,11 +80,22 @@ h3 {
 }
 
 /* =========================
+   DEFAULT PARAGRAPHS
+   (Makes normal text smaller and not bold)
+========================= */
+p {
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.8;
+    color: #e2e8f0;
+}
+
+/* =========================
    FORM CONTAINER
 ========================= */
 form {
     width: 100%;
-    max-width: 700px; /* Larger form for admin pages */
+    max-width: 700px;
     margin: 30px auto;
     padding: 40px;
     background: rgba(255, 255, 255, 0.12);
@@ -223,12 +234,16 @@ a:hover {
     background: rgba(255, 255, 255, 0.18);
 }
 
-.card p {
+/* Dashboard statistic numbers only */
+.cards .card p {
     font-size: 1.8rem;
     font-weight: 700;
     margin-top: 10px;
+    color: white;
 }
 
+/* Regular paragraphs inside cards */
+.card > p,
 .card-description {
     font-size: 0.95rem !important;
     font-weight: 400 !important;
@@ -260,6 +275,9 @@ td {
     background: rgba(255, 255, 255, 0.08);
     padding: 14px;
     text-align: center;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #e2e8f0;
 }
 
 tr:hover td {
@@ -339,7 +357,8 @@ tr:hover td {
     border: 1px solid rgba(34, 197, 94, 0.30);
     border-radius: 12px;
     color: #bbf7d0;
-    font-weight: 600;
+    font-size: 0.95rem;
+    font-weight: 500;
     text-align: center;
 }
 
@@ -352,6 +371,8 @@ tr:hover td {
     text-align: center;
     background: rgba(255, 255, 255, 0.08);
     color: #cbd5e1;
+    font-size: 0.9rem;
+    font-weight: 400;
 }
 
 /* =========================
@@ -409,5 +430,16 @@ tr:hover td {
 
     h2 {
         font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.15rem;
+    }
+
+    p,
+    .card > p,
+    .card-description,
+    td {
+        font-size: 0.9rem !important;
     }
 }
