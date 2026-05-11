@@ -317,23 +317,265 @@ textarea {
 /* =========================
    BUTTONS
 ========================= */
-button,
-.btn {
+/* BODY */
+body{
+    margin: 0;
+    min-height: 100vh;
+
+    font-family: Arial, sans-serif;
+
+    background:
+    linear-gradient(
+        135deg,
+        #0f172a,
+        #1e293b,
+        #334155
+    );
+
+    overflow: hidden;
+}
+
+/* HERO */
+.hero{
     width: 100%;
-    padding: 14px;
-    margin-top: 20px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #3b82f6, #06b6d4);
-    color: white !important;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+}
+
+/* GLASS BOX */
+.glass-box{
+    width: 90%;
+    max-width: 850px;
+
+    padding: 60px 50px;
+
     text-align: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 20px rgba(14, 165, 233, 0.30);
+
+    background: rgba(255,255,255,0.10);
+
+    border-radius: 32px;
+
+    border: 1px solid rgba(255,255,255,0.12);
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.35);
+
+    transition: 0.35s ease;
+
+    position: relative;
+    overflow: hidden;
+}
+
+/* TOP CIRCLE EFFECT */
+.glass-box::before{
+    content: "";
+
+    position: absolute;
+
+    top: -120px;
+    right: -120px;
+
+    width: 250px;
+    height: 250px;
+
+    background: rgba(255,255,255,0.05);
+
+    border-radius: 50%;
+}
+
+/* HOVER */
+.glass-box:hover{
+    transform: translateY(-6px);
+}
+
+/* BADGE */
+.badge{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 10px 18px;
+
+    background: rgba(255,255,255,0.10);
+
+    border-radius: 50px;
+
+    color: white;
+
+    font-size: 14px;
+
+    margin-bottom: 25px;
+}
+
+/* LOGO */
+.hero-logo{
+    font-size: 90px;
+
+    margin-bottom: 15px;
+
+    animation: float 3s ease-in-out infinite;
+}
+
+/* FLOAT ANIMATION */
+@keyframes float{
+
+    0%{
+        transform: translateY(0px);
+    }
+
+    50%{
+        transform: translateY(-8px);
+    }
+
+    100%{
+        transform: translateY(0px);
+    }
+}
+
+/* TITLE */
+.glass-box h1{
+    color: white;
+
+    font-size: 52px;
+
+    margin-bottom: 18px;
+}
+
+/* DESCRIPTION */
+.glass-box p{
+    color: rgba(255,255,255,0.82);
+
+    font-size: 18px;
+
+    line-height: 1.8;
+
+    margin-bottom: 40px;
+}
+
+/* FEATURES */
+.features{
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 45px;
+}
+
+/* FEATURE BOX */
+.feature-box{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 16px 22px;
+
+    background: rgba(255,255,255,0.10);
+
+    border-radius: 18px;
+
+    color: white;
+
+    transition: 0.3s ease;
+}
+
+/* FEATURE HOVER */
+.feature-box:hover{
+    transform: translateY(-4px);
+
+    background: rgba(255,255,255,0.16);
+}
+
+/* ICON */
+.feature-box i{
+    font-size: 18px;
+}
+
+/* BUTTON GROUP */
+.btn-group{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    flex-wrap: wrap;
+}
+
+/* BUTTON */
+.btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    padding: 15px 36px;
+
+    border-radius: 15px;
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+    transition: 0.3s ease;
+}
+
+/* PRIMARY BUTTON */
+.btn-primary{
+    background: white;
+
+    color: #243b55;
+}
+
+/* PRIMARY HOVER */
+.btn-primary:hover{
+    transform: translateY(-3px);
+
+    background: #dbe7ff;
+}
+
+/* OUTLINE BUTTON */
+.btn-outline{
+    border: 2px solid rgba(255,255,255,0.20);
+
+    color: white;
+
+    background: rgba(255,255,255,0.08);
+}
+
+/* OUTLINE HOVER */
+.btn-outline:hover{
+    transform: translateY(-3px);
+
+    background: rgba(255,255,255,0.15);
+}
+
+/* MOBILE */
+@media(max-width: 768px){
+
+    .glass-box{
+        padding: 40px 25px;
+    }
+
+    .glass-box h1{
+        font-size: 36px;
+    }
+
+    .glass-box p{
+        font-size: 16px;
+    }
+
+    .btn{
+        width: 100%;
+    }
+
+    .features{
+        flex-direction: column;
+    }
 }
 
 button:hover,
