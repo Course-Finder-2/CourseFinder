@@ -91,8 +91,8 @@ input, select{
 
 /* FIX FOR INVISIBLE CATEGORIES */
 select option {
-    background-color: #1e293b; /* Dark background for the dropdown list */
-    color: white;             /* White text for the dropdown list */
+    background-color: #1e293b; 
+    color: white;             
 }
 
 input::placeholder{
