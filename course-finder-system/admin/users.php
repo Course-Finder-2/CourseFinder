@@ -48,7 +48,7 @@ if (isset($_GET['delete'])) {
 <?php include("../includes/navbar.php"); ?>
 
 <div class="container">
-
+    
     <h1>👥 Registered Users</h1>
 
     <p style="text-align:center; color:gray;">

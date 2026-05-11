@@ -23,7 +23,7 @@ $user = $conn->query("SELECT * FROM users WHERE user_id = $user_id")->fetch_asso
 <html>
 <head>
     <title>My Profile</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/student&admin.css">
 </head>
 <body>
 <div class="container">

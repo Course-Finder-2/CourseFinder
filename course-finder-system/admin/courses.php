@@ -126,7 +126,6 @@ if (isset($_GET['edit'])) {
 <?php include("../includes/navbar.php"); ?>
 
 <div class="container">
-
     <h1>📚 Manage Courses</h1>
 
     <p style="text-align:center; color:gray;">

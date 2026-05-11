@@ -1,0 +1,499 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+
+/* =========================
+   RESET
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* =========================
+   BODY BACKGROUND
+========================= */
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a, #1e293b, #0ea5e9);
+    color: white;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+.container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+
+/* =========================
+   HERO SECTION
+========================= */
+.hero {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+
+/* =========================
+   GLASS BOX
+========================= */
+.glass-box {
+    width: 90%;
+    max-width: 650px;
+    padding: 50px;
+    background: rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================
+   HEADINGS
+========================= */
+h1,
+h2,
+h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+
+h1 {
+    font-size: 2.4rem;
+}
+
+
+h2 {
+    font-size: 2rem;
+}
+
+
+h3 {
+    font-size: 1.3rem;
+}
+
+
+/* =========================
+   DEFAULT PARAGRAPHS
+========================= */
+p {
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.8;
+    color: #e2e8f0;
+}
+
+
+/* =========================
+   FORM CONTAINER
+========================= */
+form {
+    width: 100%;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.30);
+    transition: all 0.3s ease;
+}
+
+
+form:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 25px 55px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================
+   LABELS
+========================= */
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #e2e8f0;
+}
+
+
+/* =========================
+   INPUTS & SELECTS
+========================= */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 14px 16px;
+    margin-top: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 12px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.14);
+    color: white;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+
+input::placeholder,
+textarea::placeholder {
+    color: #d1d5db;
+}
+
+
+input:focus,
+select:focus,
+textarea:focus {
+    background: rgba(255, 255, 255, 0.20);
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.20);
+}
+
+
+/* Dropdown options */
+select option {
+    background: #1e293b;
+    color: white;
+}
+
+
+/* Textarea */
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+button,
+.btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    color: white !important;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(14, 165, 233, 0.30);
+}
+
+
+button:hover,
+.btn:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #2563eb, #0891b2);
+    box-shadow: 0 12px 25px rgba(14, 165, 233, 0.40);
+}
+
+
+/* =========================
+   LINKS
+========================= */
+a {
+    color: #93c5fd;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+
+a:hover {
+    color: white;
+}
+
+
+/* =========================
+   DASHBOARD CARDS
+========================= */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-top: 25px;
+}
+
+
+.card {
+    background: rgba(255, 255, 255, 0.12);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.20);
+    transition: all 0.3s ease;
+}
+
+
+.card:hover {
+    transform: translateY(-6px);
+    background: rgba(255, 255, 255, 0.18);
+}
+
+
+/* Dashboard statistic numbers only */
+.cards .card p {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-top: 10px;
+    color: white;
+}
+
+
+/* Regular paragraphs inside cards */
+.card>p,
+.card-description {
+    font-size: 0.95rem !important;
+    font-weight: 400 !important;
+    line-height: 1.8;
+    margin-top: 10px;
+    color: #e2e8f0;
+    text-align: center;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+table {
+    width: 100%;
+    margin-top: 25px;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.20);
+}
+
+
+th {
+    background: linear-gradient(135deg, #2563eb, #0ea5e9);
+    padding: 14px;
+    font-weight: 600;
+}
+
+
+td {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 14px;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #e2e8f0;
+}
+
+
+tr:hover td {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+
+/* =========================
+   CHART BOX
+========================= */
+.chart-box {
+    width: 100%;
+    max-width: 850px;
+    margin: 35px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================
+   NAVIGATION LINKS
+========================= */
+.links {
+    text-align: center;
+    margin-top: 30px;
+}
+
+
+.links a {
+    display: inline-block;
+    margin: 8px;
+    padding: 12px 18px;
+    background: rgba(37, 99, 235, 0.85);
+    color: white;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+
+.links a:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 14px;
+    text-align: center;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.20);
+}
+
+
+.navbar a {
+    color: white;
+    margin: 0 12px;
+    font-weight: 600;
+}
+
+
+.navbar a:hover {
+    color: #38bdf8;
+}
+
+
+/* =========================
+   MESSAGE ALERT
+========================= */
+.message {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 14px 20px;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.30);
+    border-radius: 12px;
+    color: #bbf7d0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+.footer {
+    margin-top: 50px;
+    padding: 20px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+
+/* =========================
+   ANIMATION
+========================= */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+@media (max-width: 768px) {
+    .container {
+        width: 96%;
+        margin: 20px auto;
+    }
+
+
+    form {
+        width: 100%;
+        padding: 25px;
+    }
+
+
+    .glass-box {
+        padding: 30px;
+    }
+
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+
+    table {
+        font-size: 14px;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+
+    .links a {
+        display: block;
+        margin: 10px auto;
+        width: 90%;
+    }
+
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+
+    h3 {
+        font-size: 1.15rem;
+    }
+
+
+    p,
+    .card>p,
+    .card-description,
+    td {
+        font-size: 0.9rem !important;
+    }
+}
