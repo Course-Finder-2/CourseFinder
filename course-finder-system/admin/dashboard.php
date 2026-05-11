@@ -7,29 +7,40 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
     exit();
 }
 
-/* SYSTEM COUNTS (SAFE + CLEAN) */
-$student_count = $conn->query("SELECT COUNT(*) as total FROM users WHERE role='student'")
-    ->fetch_assoc()['total'];
+/* =========================
+   SYSTEM COUNTS (SAFE + CLEAN)
+========================= */
+$student_count = $conn->query("
+    SELECT COUNT(*) AS total
+    FROM users
+    WHERE role = 'student'
+")->fetch_assoc()['total'];
 
-$course_count = $conn->query("SELECT COUNT(*) as total FROM courses")
-    ->fetch_assoc()['total'];
+$course_count = $conn->query("
+    SELECT COUNT(*) AS total
+    FROM courses
+")->fetch_assoc()['total'];
 
-$category_count = $conn->query("SELECT COUNT(*) as total FROM categories")
-    ->fetch_assoc()['total'];
+$category_count = $conn->query("
+    SELECT COUNT(*) AS total
+    FROM categories
+")->fetch_assoc()['total'];
 ?>
 
 <?php include("../includes/header.php"); ?>
 <?php include("../includes/navbar.php"); ?>
 
+<!-- CHART.JS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <div class="container">
 
-    <!-- HEADER -->
+    <!-- PAGE HEADER -->
     <h1>👨‍💼 Admin Dashboard</h1>
 
-    <p style="text-align:center; color:gray;">
-        Welcome Admin. This dashboard provides system monitoring, management tools, and data insights for the Course Finder System.
+    <p style="text-align:center; color: #cbd5e1; margin-bottom: 25px;">
+        Welcome Admin. This dashboard provides system monitoring,
+        management tools, and data insights for the Course Finder System.
     </p>
 
     <!-- SUMMARY CARDS -->
@@ -57,17 +68,19 @@ $category_count = $conn->query("SELECT COUNT(*) as total FROM categories")
         <canvas id="myChart"></canvas>
     </div>
 
-    <!-- SYSTEM INSIGHT -->
-    <div class="card" style="width:70%; margin:30px auto;">
-        <h3>📊 System Insight</h3>
-        <p>
-            The system uses relational database design with foreign key relationships between users,
-            categories, and courses. Student preferences are stored and used to generate course recommendations
-            through SQL JOIN operations.
+    <!-- SYSTEM OVERVIEW -->
+    <div class="card" style="width: 70%; margin: 30px auto;">
+        <h3>📊 System Overview</h3>
+
+        <p class="card-description">
+            The system uses relational database design with foreign key
+            relationships between users, categories, and courses.
+            Student preferences are stored and used to generate
+            course recommendations through SQL JOIN operations.
         </p>
     </div>
 
-    <!-- MANAGEMENT -->
+    <!-- MANAGEMENT MODULES -->
     <h3>⚙️ Management Modules</h3>
 
     <div class="links">
@@ -93,14 +106,28 @@ new Chart(ctx, {
                 <?php echo $course_count; ?>,
                 <?php echo $category_count; ?>
             ],
-            backgroundColor: ['#007bff', '#28a745', '#ffc107']
+            backgroundColor: [
+                '#3b82f6',
+                '#22c55e',
+                '#f59e0b'
+            ],
+            borderRadius: 8
         }]
     },
     options: {
         responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                display: true
+            }
+        },
         scales: {
             y: {
-                beginAtZero: true
+                beginAtZero: true,
+                ticks: {
+                    precision: 0
+                }
             }
         }
     }
