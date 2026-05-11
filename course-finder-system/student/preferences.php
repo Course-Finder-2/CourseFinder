@@ -11,8 +11,8 @@ $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['name'];
 $message = "";
 
-/* =========================
-   GET CURRENT PREFERENCE (SAFE)
+/* ========================
+   GET CURRENT PREFERENCE 
 ========================= */
 $current_category_id = "";
 $current_category_name = "Not Set";
@@ -36,7 +36,7 @@ if ($current && $current->num_rows > 0) {
 }
 
 /* =========================
-   SAVE OR UPDATE PREFERENCE (SAFE)
+   SAVE OR UPDATE PREFERENCE 
 ========================= */
 if (isset($_POST['save'])) {
 

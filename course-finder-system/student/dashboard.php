@@ -11,8 +11,8 @@ $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['name'];
 $current_date = date("F d, Y");
 
-/* =========================
-   GET STUDENT CATEGORY (SAFE)
+/* ======================
+   GET STUDENT CATEGORY 
 ========================= */
 $stmt = $conn->prepare("
     SELECT categories.category_name
@@ -31,9 +31,9 @@ if ($interestQuery && $interestQuery->num_rows > 0) {
     $interest = $interestQuery->fetch_assoc()['category_name'];
 }
 
-/* =========================
-   TOTAL COURSES (SAFE)
-========================= */
+/* ==============
+   TOTAL COURSES 
+================= */
 $totalCoursesStmt = $conn->prepare("
     SELECT COUNT(*) AS total
     FROM courses
@@ -41,8 +41,8 @@ $totalCoursesStmt = $conn->prepare("
 $totalCoursesStmt->execute();
 $total_courses = $totalCoursesStmt->get_result()->fetch_assoc()['total'];
 
-/* =========================
-   RECOMMENDED COURSES WITH DETAILS (SAFE)
+/* ========================
+   RECOMMENDED COURSES WITH DETAILS 
 ========================= */
 $recStmt = $conn->prepare("
     SELECT DISTINCT
