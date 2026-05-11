@@ -10,7 +10,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <title>Course Finder System</title>
 
     <!-- GLOBAL CSS -->
-    <link rel="stylesheet" href="/course-finder-system/assets/css/style.css">
+    <link rel="stylesheet" href="/course-finder-system/assets/css/student-admin.css">
 
 </head>
 <body>

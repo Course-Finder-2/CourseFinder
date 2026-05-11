@@ -86,7 +86,7 @@ if (isset($_POST['save'])) {
 <html>
 <head>
     <title>Set Preferences - Course Finder</title>
-    <link rel="stylesheet" href="../assets/css/student&admin.css">
+    <link rel="stylesheet" href="../assets/css/student-admin.css">
 </head>
 <body>
 

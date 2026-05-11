@@ -73,7 +73,7 @@ $recommended_count = $result->num_rows;
 <html>
 <head>
     <title>Student Dashboard - Course Finder</title>
-    <link rel="stylesheet" href="../assets/css/student&admin.css">
+    <link rel="stylesheet" href="../assets/css/student-admin.css">
 </head>
 <body>
 
